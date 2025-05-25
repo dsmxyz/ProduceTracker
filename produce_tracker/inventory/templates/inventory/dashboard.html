@@ -1,0 +1,109 @@
+{% extends "inventory/base.html" %}
+{% load custom_filters %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2>Current Stock Levels</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Culantro Small (2kg)</h5>
+                        <p class="display-4">{{ stock.culantro_small }}</p>
+                        <p class="card-text">{{ stock.culantro_small|multiply:2 }} kg available</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Culantro Large (4kg)</h5>
+                        <p class="display-4">{{ stock.culantro_large }}</p>
+                        <p class="card-text">{{ stock.culantro_large|multiply:4 }} kg available</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Thyme (1kg)</h5>
+                        <p class="display-4">{{ stock.thyme }}</p>
+                        <p class="card-text">{{ stock.thyme }} kg available</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <a href="{% url 'customer-create' %}" class="btn btn-success mb-2 w-100">Add Customer</a>
+                <a href="{% url 'inventory-create' %}" class="btn btn-success mb-2 w-100">Add Inventory</a>
+                <a href="{% url 'order-create' %}" class="btn btn-success mb-2 w-100">Create Order</a>
+                <a href="{% url 'packing-sheet' %}" class="btn btn-outline-success w-100">View Packing Sheet</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Recent Orders</h5>
+            </div>
+            <div class="card-body">
+                {% if recent_orders %}
+                <div class="list-group">
+                    {% for order in recent_orders %}
+                    <a href="{% url 'order-detail' order.id %}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">Order #{{ order.id }}</h6>
+                            <small class="text-muted">{{ order.order_date|date:"M d" }}</small>
+                        </div>
+                        <p class="mb-1">{{ order.customer.company_name }}</p>
+                        <small class="text-muted">Delivery: {{ order.delivery_date|date:"M d" }}</small>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted">No recent orders</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Recent Inventory</h5>
+            </div>
+            <div class="card-body">
+                {% if recent_inventory %}
+                <div class="list-group">
+                    {% for item in recent_inventory %}
+                    <a href="{% url 'inventory-detail' item.id %}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">{{ item.product.get_name_display }}</h6>
+                            <small class="text-muted">{{ item.arrival_date|date:"M d" }}</small>
+                        </div>
+                        <p class="mb-1">Quantity: {{ item.quantity }}</p>
+                        <small class="text-muted">Airway: {{ item.airway_bill|truncatechars:10 }}</small>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted">No recent inventory</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

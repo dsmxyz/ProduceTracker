@@ -1,0 +1,59 @@
+{% extends "inventory/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Import/Export Data{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Import Data</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ import_form|crispy }}
+                    <button type="submit" class="btn btn-success">Import</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>Export Data</h4>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'export-csv' 'customers' %}" class="btn btn-outline-success">
+                        Export Customers
+                    </a>
+                    <a href="{% url 'export-csv' 'inventory' %}" class="btn btn-outline-success">
+                        Export Inventory
+                    </a>
+                    <a href="{% url 'export-csv' 'orders' %}" class="btn btn-outline-success">
+                        Export Orders
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h4>Import Instructions</h4>
+    </div>
+    <div class="card-body">
+        <p>CSV files should have the following columns:</p>
+        <ul>
+            <li><strong>Customers:</strong> company_name, address, email, phone, fax</li>
+            <li><strong>Inventory:</strong> product (CS, CL, or TH), airway_bill, quantity, arrival_date (YYYY-MM-DD)</li>
+            <li><strong>Orders:</strong> customer_id, delivery_date (YYYY-MM-DD), notes</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

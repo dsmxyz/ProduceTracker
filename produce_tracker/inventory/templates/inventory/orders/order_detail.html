@@ -1,0 +1,75 @@
+{% extends "inventory/base.html" %}
+{% load static %}
+
+{% block title %}Order #{{ order.id }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h3>Order #{{ order.id }}</h3>
+        <div>
+            <a href="{% url 'order-update' order.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+            <a href="{% url 'order-delete' order.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h5>Customer Information</h5>
+                <p><strong>{{ order.customer.company_name }}</strong></p>
+                <p>{{ order.customer.address }}</p>
+                <p>Email: {{ order.customer.email }}</p>
+                <p>Phone: {{ order.customer.phone }}</p>
+                {% if order.customer.fax %}
+                <p>Fax: {{ order.customer.fax }}</p>
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <h5>Order Details</h5>
+                <p><strong>Order Date:</strong> {{ order.order_date|date:"M d, Y" }}</p>
+                <p><strong>Delivery Date:</strong> {{ order.delivery_date|date:"M d, Y" }}</p>
+                <p><strong>Status:</strong> 
+                    {% if order.is_delivered %}
+                    <span class="badge bg-success">Delivered</span>
+                    {% else %}
+                    <span class="badge bg-warning text-dark">Pending</span>
+                    {% endif %}
+                </p>
+                {% if order.notes %}
+                <p><strong>Notes:</strong> {{ order.notes }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <h5>Order Items</h5>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Unit Weight</th>
+                        <th>Total Weight</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order.orderitem_set.all %}
+                    <tr>
+                        <td>{{ item.product.get_name_display }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.product.weight }}kg</td>
+                        <td>{{ item.total_weight }}kg</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="3">Total Weight</th>
+                        <th>{{ order.total_weight }}kg</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

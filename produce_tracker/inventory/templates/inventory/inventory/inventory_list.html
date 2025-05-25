@@ -1,0 +1,94 @@
+{% extends "inventory/base.html" %}
+{% load crispy_forms_tags %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Inventory</h2>
+    <a href="{% url 'inventory-create' %}" class="btn btn-success">
+        <i class="bi bi-plus-lg"></i> Add Inventory
+    </a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get">
+            <div class="row">
+                <div class="col-md-6">
+                    {{ search_form.product_type|as_crispy_field }}
+                </div>
+                <div class="col-md-6">
+                    {{ search_form.arrival_date|as_crispy_field }}
+                </div>
+            </div>
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary me-2">Search</button>
+                <a href="{% url 'inventory-list' %}" class="btn btn-secondary">Reset</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Stock summary cards -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Culantro Small</h5>
+                <p class="card-text display-4">{{ stock.culantro_small }}</p>
+                <p class="card-text">{{ stock.culantro_small|multiply:2 }} kg in stock</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Culantro Large</h5>
+                <p class="card-text display-4">{{ stock.culantro_large }}</p>
+                <p class="card-text">{{ stock.culantro_large|multiply:4 }} kg in stock</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Thyme</h5>
+                <p class="card-text display-4">{{ stock.thyme }}</p>
+                <p class="card-text">{{ stock.thyme }} kg in stock</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Inventory items table -->
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Airway Bill</th>
+                        <th>Quantity</th>
+                        <th>Arrival Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in inventory_items %}
+                    <tr>
+                        <td>{{ item.product.get_name_display }}</td>
+                        <td>{{ item.airway_bill }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.arrival_date|date:"M d, Y" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">No inventory items found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

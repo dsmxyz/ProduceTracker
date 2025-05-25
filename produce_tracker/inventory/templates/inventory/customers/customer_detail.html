@@ -1,0 +1,44 @@
+{% extends "inventory/base.html" %}
+
+{% block title %}{{ customer.company_name }} Details{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h3>Customer Details</h3>
+        <div>
+            <a href="{% url 'customer-update' customer.pk %}" class="btn btn-sm btn-primary">Edit</a>
+            <a href="{% url 'customer-delete' customer.pk %}" class="btn btn-sm btn-danger">Delete</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Company Name</dt>
+            <dd class="col-sm-9">{{ customer.company_name }}</dd>
+
+            <dt class="col-sm-3">Address</dt>
+            <dd class="col-sm-9">{{ customer.address|linebreaks }}</dd>
+
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">{{ customer.email }}</dd>
+
+            <dt class="col-sm-3">Phone</dt>
+            <dd class="col-sm-9">{{ customer.phone }}</dd>
+
+            {% if customer.fax %}
+            <dt class="col-sm-3">Fax</dt>
+            <dd class="col-sm-9">{{ customer.fax }}</dd>
+            {% endif %}
+
+            <dt class="col-sm-3">Created</dt>
+            <dd class="col-sm-9">{{ customer.created_at|date:"M d, Y H:i" }}</dd>
+
+            <dt class="col-sm-3">Last Updated</dt>
+            <dd class="col-sm-9">{{ customer.updated_at|date:"M d, Y H:i" }}</dd>
+        </dl>
+        <div class="text-end">
+            <a href="{% url 'customer-list' %}" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

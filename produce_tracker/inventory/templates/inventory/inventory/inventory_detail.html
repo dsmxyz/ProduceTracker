@@ -1,0 +1,36 @@
+{% extends "inventory/base.html" %}
+
+{% block title %}Inventory Details{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h3>Inventory Details</h3>
+        <div>
+            <a href="{% url 'inventory-update' inventory.pk %}" class="btn btn-sm btn-primary">Edit</a>
+            <a href="{% url 'inventory-delete' inventory.pk %}" class="btn btn-sm btn-danger">Delete</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Product</dt>
+            <dd class="col-sm-9">{{ inventory.product.get_name_display }}</dd>
+
+            <dt class="col-sm-3">Airway Bill</dt>
+            <dd class="col-sm-9">{{ inventory.airway_bill }}</dd>
+
+            <dt class="col-sm-3">Quantity</dt>
+            <dd class="col-sm-9">{{ inventory.quantity }}</dd>
+
+            <dt class="col-sm-3">Arrival Date</dt>
+            <dd class="col-sm-9">{{ inventory.arrival_date|date:"M d, Y" }}</dd>
+
+            <dt class="col-sm-3">Created At</dt>
+            <dd class="col-sm-9">{{ inventory.created_at|date:"M d, Y H:i" }}</dd>
+        </dl>
+        <div class="text-end">
+            <a href="{% url 'inventory-list' %}" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

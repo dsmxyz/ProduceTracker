@@ -1,0 +1,93 @@
+{% extends "inventory/base.html" %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h2>Current Stock</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Culantro Small (2kg)</h5>
+                        <p class="display-4">{{ stock.culantro_small }}</p>
+                        <p class="text-muted">{{ stock.culantro_small|multiply:2 }} kg</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Culantro Large (4kg)</h5>
+                        <p class="display-4">{{ stock.culantro_large }}</p>
+                        <p class="text-muted">{{ stock.culantro_large|multiply:4 }} kg</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Thyme (1kg)</h5>
+                        <p class="display-4">{{ stock.thyme }}</p>
+                        <p class="text-muted">{{ stock.thyme }} kg</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <a href="{% url 'customer-create' %}" class="btn btn-success mb-2 w-100">Add Customer</a>
+                <a href="{% url 'inventory-create' %}" class="btn btn-success mb-2 w-100">Add Inventory</a>
+                <a href="{% url 'order-create' %}" class="btn btn-success mb-2 w-100">Create Order</a>
+                <a href="{% url 'packing-sheet' %}" class="btn btn-outline-success w-100">View Packing Sheet</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <h3>Recent Orders</h3>
+        <div class="list-group">
+            {% for order in recent_orders %}
+            <a href="{% url 'order-detail' order.id %}" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Order #{{ order.id }}</h5>
+                    <small>{{ order.order_date|date:"M d, Y" }}</small>
+                </div>
+                <p class="mb-1">{{ order.customer }}</p>
+                <small>Delivery: {{ order.delivery_date|date:"M d, Y" }}</small>
+            </a>
+            {% empty %}
+            <div class="list-group-item">No recent orders</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <h3>Recent Inventory</h3>
+        <div class="list-group">
+            {% for item in recent_inventory %}
+            <a href="{% url 'inventory-detail' item.id %}" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ item.product }}</h5>
+                    <small>{{ item.arrival_date|date:"M d, Y" }}</small>
+                </div>
+                <p class="mb-1">Quantity: {{ item.quantity }}</p>
+                <small>Airway Bill: {{ item.airway_bill }}</small>
+            </a>
+            {% empty %}
+            <div class="list-group-item">No recent inventory</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
