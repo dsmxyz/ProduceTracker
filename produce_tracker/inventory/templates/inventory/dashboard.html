@@ -95,7 +95,7 @@
                             <small class="text-muted">{{ item.arrival_date|date:"M d" }}</small>
                         </div>
                         <p class="mb-1">Quantity: {{ item.quantity }}</p>
-                        <small class="text-muted">Airway: {{ item.airway_bill|truncatechars:10 }}</small>
+                        <small class="text-muted">Airway: {{ item.airway_bill|truncatechars:15 }}</small>
                     </a>
                     {% endfor %}
                 </div>
