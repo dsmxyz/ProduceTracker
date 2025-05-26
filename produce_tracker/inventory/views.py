@@ -156,7 +156,7 @@ def inventory_update(request, pk):
     else:
         form = InventoryForm(instance=inventory)
 
-    return render(request, 'inventory/inventory_form.html', {
+    return render(request, 'inventory/inventory/inventory_form.html', {
         'form': form,
         'title': f'Update {inventory.product.get_name_display()}'
     })

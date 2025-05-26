@@ -71,6 +71,7 @@
                         <th>Airway Bill</th>
                         <th>Quantity</th>
                         <th>Arrival Date</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -80,6 +81,18 @@
                         <td>{{ item.airway_bill }}</td>
                         <td>{{ item.quantity }}</td>
                         <td>{{ item.arrival_date|date:"M d, Y" }}</td>
+                        <td class="text-nowrap">
+                            <!-- Add these action buttons -->
+                            <a href="{% url 'inventory-detail' item.pk %}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{% url 'inventory-update' item.pk %}" class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="{% url 'inventory-delete' item.pk %}" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
                     </tr>
                     {% empty %}
                     <tr>
