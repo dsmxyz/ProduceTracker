@@ -39,9 +39,15 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a href="{% url 'order-detail' order.pk %}" class="btn btn-sm btn-outline-primary">View</a>
-                            <a href="{% url 'order-update' order.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
-                            <a href="{% url 'order-delete' order.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                            <a href="{% url 'order-detail' order.pk %}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{% url 'order-update' order.pk %}" class="btn btn-sm btn-outline-warning">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="{% url 'order-delete' order.pk %}" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
                         </td>
                     </tr>
                     {% empty %}
