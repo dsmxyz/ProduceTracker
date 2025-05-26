@@ -1,0 +1,76 @@
+/* Add this at the top of your CSS file */
+:root {
+    --font-primary: 'Funnel Sans', sans-serif;
+}
+
+body {
+    font-family: var(--font-primary);
+    font-weight: 400; /* Regular weight */
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6,
+.card-header, .navbar-brand {
+    font-weight: 600; /* Semi-bold */
+}
+
+/* Special cases */
+.btn {
+    font-weight: 600; /* Semi-bold buttons */
+}
+
+.navbar-nav {
+    font-weight: 500; /* Medium weight for nav items */
+}
+
+/* Dark mode compatibility */
+[data-bs-theme="dark"] body {
+    font-family: var(--font-primary);
+    /* Other dark mode styles remain unchanged */
+}
+
+body {
+  padding-top: 0px;
+}
+
+.card {
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.multiselect-dropdown {
+  width: 100%;
+}
+
+/* Custom green theme */
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
+.bg-success {
+  background-color: #28a745 !important;
+}
+
+/* Dark mode toggle button */
+#darkModeToggle {
+  transition: all 0.3s;
+}
+
+.dropdown-item.active {
+  background-color: #198754; /* Your green theme color */
+  color: white;
+}
+
+.dropdown-item.active:hover {
+  background-color: #157347;
+  color: white;
+}
