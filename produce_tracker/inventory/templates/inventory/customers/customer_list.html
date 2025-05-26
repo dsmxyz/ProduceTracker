@@ -30,8 +30,13 @@
                         <td>{{ customer.email }}</td>
                         <td>{{ customer.phone }}</td>
                         <td>
-                            <a href="{% url 'customer-update' customer.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
-                            <a href="{% url 'customer-delete' customer.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                            <a href="{% url 'customer-detail' customer.pk %}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{% url 'customer-update' customer.pk %}" class="btn btn-sm btn-outline-warning">
+                                <i class="bi bi-pencil"></i></a>
+                            <a href="{% url 'customer-delete' customer.pk %}" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i></a>
                         </td>
                     </tr>
                     {% empty %}
