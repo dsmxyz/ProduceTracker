@@ -9,3 +9,7 @@ def multiply(value, arg):
         return float(value) * float(arg)
     except (ValueError, TypeError):
         return ''
+
+@register.filter
+def sum_attr(items, attr):
+    return sum(getattr(item, attr) for item in items)

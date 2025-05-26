@@ -1,38 +1,50 @@
 {% extends "inventory/base.html" %}
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}Packing Sheet{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Packing Sheet</h2>
-    <div class="btn-group">
-        <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown">
-            Filter by Date
-        </button>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'packing-sheet' %}">All Pending</a></li>
-            <li><hr class="dropdown-divider"></li>
-            {% for date in upcoming_dates %}
-            <li><a class="dropdown-item" href="{% url 'packing-sheet-date' date|date:'Y-m-d' %}">{{ date|date:"M d, Y" }}</a></li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
-
 <div class="card mb-4">
-    <div class="card-header">
-        <h4>{% if delivery_date %}{{ delivery_date|date:"l, M d, Y" }}{% else %}All Pending Orders{% endif %}</h4>
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h3>Packing Sheet</h3>
+        <div class="dropdown">
+            <button class="btn btn-success dropdown-toggle" type="button" id="dateDropdown" 
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                {% if selected_date %}
+                    {{ selected_date|date:"M d, Y" }} ({{ selected_date|date:"D" }})
+                {% else %}
+                    All Pending Orders
+                {% endif %}
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dateDropdown">
+                <li>
+                    <a class="dropdown-item {% if not selected_date %}active{% endif %}" 
+                       href="{% url 'packing-sheet' %}">
+                        All Pending Orders
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                {% for date in upcoming_dates %}
+                <li>
+                    <a class="dropdown-item {% if selected_date == date %}active{% endif %}" 
+                       href="{% url 'packing-sheet-date' date|date:'Y-m-d' %}">
+                        {{ date|date:"M d, Y" }} ({{ date|date:"D" }})
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
+    
+    {% if orders %}
     <div class="card-body">
-        {% if orders %}
         <div class="table-responsive">
             <table class="table">
                 <thead>
                     <tr>
                         <th>Order #</th>
                         <th>Customer</th>
-                        <th>Delivery Date</th>
                         <th>Items</th>
                         <th>Total Weight</th>
                     </tr>
@@ -42,22 +54,23 @@
                     <tr>
                         <td>{{ order.id }}</td>
                         <td>{{ order.customer.company_name }}</td>
-                        <td>{{ order.delivery_date|date:"M d, Y" }}</td>
                         <td>
                             {% for item in order.orderitem_set.all %}
                             {{ item.product.get_name_display }} × {{ item.quantity }}<br>
                             {% endfor %}
                         </td>
-                        <td>{{ order.total_weight }}kg</td>
+                        <td>{{ order.total_weight }} kg</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
-        {% else %}
-        <p>No orders found for this date.</p>
-        {% endif %}
     </div>
+    {% else %}
+    <div class="card-body">
+        <p class="text-muted">No orders found for this date.</p>
+    </div>
+    {% endif %}
 </div>
 
 {% if packing_data %}
@@ -78,9 +91,9 @@
                 <tbody>
                     {% for item in packing_data %}
                     <tr>
-                        <td>{{ item.product.get_name_display }}</td>
+                        <td>{{ item.product_name }}</td>
                         <td>{{ item.quantity }}</td>
-                        <td>{{ item.total_weight }}kg</td>
+                        <td>{{ item.total_weight }} kg</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -88,12 +101,16 @@
                     <tr>
                         <th>Total</th>
                         <th>{{ total_quantity }}</th>
-                        <th>{{ total_weight }}kg</th>
+                        <th>{{ total_weight }} kg</th>
                     </tr>
                 </tfoot>
             </table>
         </div>
     </div>
+</div>
+{% else %}
+<div class="alert alert-info mt-3">
+    No packing data found for the selected date.
 </div>
 {% endif %}
 {% endblock %}

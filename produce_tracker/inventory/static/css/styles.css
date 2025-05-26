@@ -33,3 +33,13 @@ body {
 #darkModeToggle {
   transition: all 0.3s;
 }
+
+.dropdown-item.active {
+  background-color: #198754; /* Your green theme color */
+  color: white;
+}
+
+.dropdown-item.active:hover {
+  background-color: #157347;
+  color: white;
+}

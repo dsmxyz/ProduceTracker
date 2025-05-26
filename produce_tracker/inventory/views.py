@@ -9,6 +9,8 @@ from .forms import (LoginForm, CustomerForm, InventoryForm, InventorySearchForm,
 from django.forms import inlineformset_factory
 import csv
 from io import TextIOWrapper
+from django.utils import timezone
+from datetime import datetime
  
 
 @login_required
@@ -256,28 +258,58 @@ def order_delete(request, pk):
 
 @login_required
 def packing_sheet(request, date=None):
+    # Get upcoming delivery dates for filter dropdown
+    upcoming_dates = Order.objects.filter(
+        delivery_date__gte=timezone.now().date()
+    ).dates('delivery_date', 'day').distinct()
+
+    # Filter orders based on date
     if date:
-        orders = Order.objects.filter(delivery_date=date)
+        try:
+            delivery_date = datetime.strptime(date, '%Y-%m-%d').date()
+            orders = Order.objects.filter(delivery_date=delivery_date)
+        except ValueError:
+            orders = Order.objects.none()
     else:
         orders = Order.objects.filter(is_delivered=False)
 
-    products = Product.objects.all()
+    # Parse the selected date if provided
+    selected_date = None
+    if date:
+        try:
+            selected_date = datetime.strptime(date, '%Y-%m-%d').date()
+        except ValueError:
+            pass
+    
+    # Calculate packing data
     packing_data = []
+    product_weights = {'CS': 2, 'CL': 4, 'TH': 1}  # Product weight mapping
 
-    for product in products:
-        total = sum(item.quantity for order in orders for item in order.orderitem_set.filter(product=product))
-        if total > 0:
+    for product_code, weight in product_weights.items():
+        total_quantity = OrderItem.objects.filter(
+            order__in=orders,
+            product__name=product_code
+        ).aggregate(total=Sum('quantity'))['total'] or 0
+
+        if total_quantity > 0:
             packing_data.append({
-                'product': product,
-                'quantity': total,
-                'total_weight': total * product.weight,
+                'product_name': Product.objects.get(name=product_code).get_name_display(),
+                'quantity': total_quantity,
+                'total_weight': total_quantity * weight
             })
+
+    # Calculate totals
+    total_quantity = sum(item['quantity'] for item in packing_data)
+    total_weight = sum(item['total_weight'] for item in packing_data)
 
     context = {
         'orders': orders,
         'packing_data': packing_data,
-        'total_weight': sum(item['total_weight'] for item in packing_data),
+        'total_quantity': total_quantity,
+        'total_weight': total_weight,
         'delivery_date': date,
+        'upcoming_dates': upcoming_dates,
+        'selected_date': selected_date,
     }
     return render(request, 'inventory/packing_sheet.html', context)
 
