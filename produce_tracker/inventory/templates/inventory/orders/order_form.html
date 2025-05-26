@@ -17,14 +17,7 @@
                 {% for form in formset %}
                 <div class="formset-form mb-3 p-3 border rounded">
                     {{ form|crispy }}
-                    {% if form.DELETE %}
-                        <div class="form-check">
-                            {{ form.DELETE }}
-                            <label class="form-check-label" for="{{ form.DELETE.id_for_label }}">
-                                Remove this item
-                            </label>
-                        </div>
-                    {% endif %}
+                    
                 </div>
                 {% endfor %}
             </div>
