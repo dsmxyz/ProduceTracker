@@ -85,8 +85,18 @@ def customer_delete(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
     if request.method == 'POST':
         customer.delete()
-        return redirect('customer-list')
-    return render(request, 'inventory/customers/customer_confirm_delete.html', {'customer': customer})
+        return redirect('customer-list')  # Redirect to customer list after deletion
+
+    return render(request, 'inventory/customers/customer_confirm_delete.html', {
+        'customer': customer
+    })
+
+@login_required
+def customer_detail(request, pk):
+    customer = get_object_or_404(Customer, pk=pk)
+    return render(request, 'inventory/customers/customer_detail.html', {
+        'customer': customer
+    })
 
 # Inventory CRUD views (similar pattern as customer views)
 @login_required

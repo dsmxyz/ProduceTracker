@@ -11,6 +11,7 @@ urlpatterns = [
     path('customers/new/', views.customer_create, name='customer-create'),
     path('customers/<int:pk>/edit/', views.customer_update, name='customer-update'),
     path('customers/<int:pk>/delete/', views.customer_delete, name='customer-delete'),
+    path('customers/<int:pk>/', views.customer_detail, name='customer-detail'),
 
     # Inventory URLs
     path('inventory/', views.inventory_list, name='inventory-list'),
