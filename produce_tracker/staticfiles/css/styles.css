@@ -1,34 +1,3 @@
-/* Add this at the top of your CSS file */
-:root {
-    --font-primary: 'Funnel Sans', sans-serif;
-}
-
-body {
-    font-family: var(--font-primary);
-    font-weight: 400; /* Regular weight */
-}
-
-/* Headings */
-h1, h2, h3, h4, h5, h6,
-.card-header, .navbar-brand {
-    font-weight: 600; /* Semi-bold */
-}
-
-/* Special cases */
-.btn {
-    font-weight: 600; /* Semi-bold buttons */
-}
-
-.navbar-nav {
-    font-weight: 500; /* Medium weight for nav items */
-}
-
-/* Dark mode compatibility */
-[data-bs-theme="dark"] body {
-    font-family: var(--font-primary);
-    /* Other dark mode styles remain unchanged */
-}
-
 body {
   padding-top: 0px;
 }
