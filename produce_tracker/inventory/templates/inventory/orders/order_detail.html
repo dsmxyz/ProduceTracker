@@ -8,8 +8,9 @@
     <div class="card-header d-flex justify-content-between align-items-center">
         <h3>Order #{{ order.id }}</h3>
         <div>
-            <a href="{% url 'order-update' order.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+            <a href="{% url 'order-update' order.pk %}" class="btn btn-sm btn-outline-warning">Edit</a>
             <a href="{% url 'order-delete' order.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+            <a href="{% url 'order-list' %}" class="btn btn-sm btn-outline-secondary">Back to list</a>
         </div>
     </div>
     <div class="card-body">
